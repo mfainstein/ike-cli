@@ -9,8 +9,8 @@ import {CommandsRegistry} from "./registries/CommandsRegistry";
 import {CommandsRegistryImpl} from "./registries/CommandsRegistryImpl";
 import {InitCommand} from "./commands/InitCommand";
 import {ExecuteCommand} from "./commands/ExecuteCommand";
-import {Command} from "ike/out/Command";
-import {CommandBase} from "ike/out/CommandBase";
+import {Command} from "ike-framework/out/Command";
+import {CommandBase} from "ike-framework/out/CommandBase";
 import {CreateCommand} from "./commands/CreateCommand";
 
 const container = new Container();

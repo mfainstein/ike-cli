@@ -1,6 +1,6 @@
 import {CommandsRegistry} from "./CommandsRegistry";
 import {injectable, multiInject} from "inversify";
-import {Command} from "ike/out/Command";
+import {Command} from "ike-framework/out/Command";
 import {Types} from "../Types";
 
 @injectable()
