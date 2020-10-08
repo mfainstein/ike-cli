@@ -1,6 +1,6 @@
 import {CommandsParser} from "./core/CommandsParser";
-import {Command} from "ike/out/Command";
-import {CommandOption} from "ike/out/CommandOption";
+import {Command} from "ike-framework/out/Command";
+import {CommandOption} from "ike-framework/out/CommandOption";
 import * as Commander from 'commander';
 import {injectable} from "inversify";
 
@@ -48,7 +48,7 @@ export class IkeCli implements CommandsParser {
         for (let option of options) {
             cliCommand.option(option.flag, option.description);
         }
-        let args: string[] = Reflect.getOwnMetadata("ike:arguments", command.constructor) || [];
+        let args: string[] = Reflect.getOwnMetadata("ike:requiredArguments", command.constructor) || [];
         cliCommand.arguments(this.buildArguments(args));
 
 

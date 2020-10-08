@@ -1,11 +1,11 @@
 import {inject, injectable} from "inversify";
 import {ProjectBuilder} from "../core/ProjectBuilder";
-import {args, CommandBase, commandName, description, options, usage} from "ike/out/CommandBase";
+import {requiredArgs, CommandBase, commandName, description, options, usage} from "ike-framework/out/CommandBase";
 import {LocalFile} from "../utilities/LocalFile";
 
 @injectable()
 @commandName("init")
-@args([])
+@requiredArgs([])
 @options(
     [
         {"name":"path", "flag": "-p, --path <path>", description: "custom path"},

@@ -1,4 +1,4 @@
-import {args, CommandBase, commandName, description, options, usage} from "ike/out/CommandBase";
+import {args, CommandBase, commandName, description, options, usage} from "ike-framework/out/CommandBase";
 
 @commandName("{{name}}")
 @args([])

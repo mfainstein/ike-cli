@@ -1,5 +1,5 @@
 import {inject, injectable} from "inversify";
-import {CommandBase} from "ike/out/CommandBase";
+import {CommandBase} from "ike-framework/out/CommandBase";
 
 
 @injectable()

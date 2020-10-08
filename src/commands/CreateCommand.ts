@@ -1,4 +1,4 @@
-import {args, CommandBase, commandName, description, usage} from "ike/out/CommandBase";
+import {requiredArgs, CommandBase, commandName, description, usage} from "ike-framework/out/CommandBase";
 import {injectable} from "inversify";
 import * as Mustache from 'mustache';
 import {LocalFile} from "../utilities/LocalFile";
@@ -7,7 +7,7 @@ import {Files} from "../utilities/Files";
 
 @injectable()
 @commandName("create")
-@args(["name"])
+@requiredArgs(["name"])
 @description("Create an executable command.")
 @usage("ike create")
 export class CreateCommand extends CommandBase {

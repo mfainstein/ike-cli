@@ -25,7 +25,8 @@
     "node-js",
     "cli",
     "command-line",
-    "runner"
+    "runner",
+    "ike"
   ],
   "author": "Mark Fainstein",
   "license": "GPL-3.0",
@@ -43,6 +44,7 @@
     "commander": "^6.1.0",
     "fs-extra": "^9.0.1",
     "ike": "file:../Ike",
+    "ike-framework": "file:../IkeFramework",
     "inquirer": "^7.3.3",
     "inversify": "^5.0.1",
     "lowdb": "^1.0.0",

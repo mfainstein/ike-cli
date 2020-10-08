@@ -1,9 +1,9 @@
 
 import {injectable} from "inversify";
 import * as Commander from 'commander';
-import {CommandOption} from "ike/out/CommandOption";
-import {CommandBase} from "ike/out/CommandBase";
-import {Command} from "ike/out/Command";
+import {CommandOption} from "ike-framework/out/CommandOption";
+import {CommandBase} from "ike-framework/out/CommandBase";
+import {Command} from "ike-framework/out/Command";
 import {tsImport} from "ts-import";
 
 @injectable()
