@@ -9,7 +9,7 @@ This is... SCA: Scripts As Code.
 * Create infrastructure instead of scattered scripts
 
 ## Basic Usage:
-https://s8.gifyu.com/images/i-like-ike.gif
+![Ike Basic Usage](https://s8.gifyu.com/images/i-like-ike-flow.gif)
 
 ## Installation
 ``` npm install ike-cli -g ```
