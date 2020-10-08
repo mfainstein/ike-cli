@@ -1,6 +1,5 @@
 # ike-cli
 Create TS/JS scripts right from the console and straight to a cli utility. Embrace you laziness, DRY, and never Bash Again!
-This is... SCA: Scripts As Code.
 
 ## Why?
 * Super fast and easy to execute
