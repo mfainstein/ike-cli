@@ -1,5 +1,4 @@
-import {Command} from "../core/Command";
-
+import {Command} from "ike/out/Command";
 export interface CommandsRegistry {
     getCommands(): Command[];
 

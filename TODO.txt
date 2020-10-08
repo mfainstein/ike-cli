@@ -1,0 +1,11 @@
+* finish all decorators for CommandBase
+* start the ike package, with emit decorators
+* when reading the scripting project, read the emitted decorators
+
+
+---------------
+advanced
+
+export a sub system of commands under a namespace
+have it inside a container with a network overlay
+deploying abilities

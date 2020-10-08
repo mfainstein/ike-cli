@@ -5,12 +5,23 @@ import {container} from "./Container";
 import {CommandsRegistry} from "./registries/CommandsRegistry";
 import {Types} from "./Types";
 import {CommandsParser} from "./core/CommandsParser";
+import { tsImport } from 'ts-import';
+import {Files} from "./utilities/Files";
+import {LocalFile} from "./utilities/LocalFile";
+
 let commandsRegistry:CommandsRegistry = container.get<CommandsRegistry>(Types.CommandsRegistry);
 let cliProgram:CommandsParser = container.get<CommandsParser>(Types.CommandsParser);
 
+let installedCommands = [];
+
 for (let command of commandsRegistry.getCommands()){
-    cliProgram.installCommand(command);
+    installedCommands.push(cliProgram.installCommand(command));
 }
 
-cliProgram.initAutoCompletion();
-cliProgram.parse();
+Promise.all(installedCommands).then(()=>{
+    cliProgram.initAutoCompletion();
+    cliProgram.parse();
+});
+
+
+

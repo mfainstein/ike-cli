@@ -1,7 +1,10 @@
 import {CommandsParser} from "./core/CommandsParser";
-import {Command} from "./core/Command";
+import {Command} from "ike/out/Command";
+import {CommandOption} from "ike/out/CommandOption";
 import * as Commander from 'commander';
 import {injectable} from "inversify";
+
+import "reflect-metadata";
 
 @injectable()
 export class IkeCli implements CommandsParser {
@@ -33,15 +36,20 @@ export class IkeCli implements CommandsParser {
         return commandArgumentsString;
     }
 
-    installCommand(command: Command) {
-        let cliCommand: Commander.Command = Commander.program.command(command.name);
-        command.setCommanderCommand(cliCommand);
-        cliCommand.description(command.description);
+    async installCommand(command: Command) {
+        //TODO: proper getter for reflection metadata
+        let name: string = Reflect.getMetadata("ike:commandName", command.constructor) || command.getDefaultName();
+        let cliCommand: Commander.Command = Commander.program.command(name);
+        await command.setCommanderCommand(cliCommand);
+        let description: string = Reflect.getMetadata("ike:description", command.constructor) || [];
+        cliCommand.description(description);
 
-        for (let option of command.options) {
+        let options: CommandOption[] = Reflect.getMetadata("ike:options", command.constructor) || [];
+        for (let option of options) {
             cliCommand.option(option.flag, option.description);
         }
-        cliCommand.arguments(this.buildArguments(command.arguments));
+        let args: string[] = Reflect.getOwnMetadata("ike:arguments", command.constructor) || [];
+        cliCommand.arguments(this.buildArguments(args));
 
 
         //TODO: should be executed through a controller which saves the execution history

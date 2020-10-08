@@ -1,7 +1,7 @@
-import {IkeFile} from "./IkeFile";
+import {LocalFile} from "./LocalFile";
 
 export class ProcessUtils {
-    public static execSyncRedirectOutput(command: string, workingDir?:IkeFile, shouldReturnOutput?:boolean): Buffer {
+    public static execSyncRedirectOutput(command: string, workingDir?:LocalFile, shouldReturnOutput?:boolean): Buffer {
         if (workingDir){
             let process = require("process");
             process.chdir(workingDir.getAbsolutePath())
@@ -13,7 +13,7 @@ export class ProcessUtils {
         return execSync(command, {stdio: [0, 1, 2]});
     }
 
-    public static execSync(command: string, workingDir?:IkeFile): Buffer {
+    public static execSync(command: string, workingDir?:LocalFile): Buffer {
         if (workingDir){
             let process = require("process");
             process.chdir(workingDir.getAbsolutePath())

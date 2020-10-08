@@ -1,0 +1,14 @@
+import {args, CommandBase, commandName, description, options, usage} from "ike/out/CommandBase";
+
+@commandName("{{name}}")
+@args([])
+@options([])
+@usage("ike {{name}}")
+@description("init a scripting project that will contain your scripts.")
+
+export class {{className}} extends CommandBase {
+
+    doExecute(argumentValues: Map<string, string>, optionValues: Map<string, string>): void {
+        //TODO: take it forward!
+    }
+}

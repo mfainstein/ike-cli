@@ -1,7 +1,10 @@
-import {CommandBase} from "../core/CommandBase";
+
 import {injectable} from "inversify";
-import {CommandOption} from "../core/CommandOption";
 import * as Commander from 'commander';
+import {CommandOption} from "ike/out/CommandOption";
+import {CommandBase} from "ike/out/CommandBase";
+import {Command} from "ike/out/Command";
+import {tsImport} from "ts-import";
 
 @injectable()
 export class ExecuteCommand extends CommandBase {
@@ -22,13 +25,23 @@ export class ExecuteCommand extends CommandBase {
 
     }
 
-    afterCommanderCommandSet(): void {
+    //called from CommandBase
+    async afterCommanderCommandSet(): Promise<void> {
         super.afterCommanderCommandSet();
+
+        //const compiledCommand:any = await tsImport.compile("/Users/markfainstein/PersonalDev/IkeScripts/src/First.ts");
+        //let command = new compiledCommand.ACommand();
+       // console.log(JSON.stringify(compiledCommand.exports.ACommand));
+        if (this.commanderCommand) {
+            //let name:string = Reflect.getMetadata("ike:commandName", command.constructor);
+            //console.log(name);
+            //this.commanderCommand.addCommand(compiledCommand);
+        }
         //add all commands in the current project
         /*let command:Commander.Command = Commander.program.command("test");
         command.description("baah");
         if (this.commanderCommand){
-            this.commanderCommand.addCommand(command);
+
         }*/
     }
 

@@ -1,6 +1,6 @@
 declare var require:any;
 import * as path from 'path';
-export class IkeFile {
+export class LocalFile {
     private path:string;
 
     public constructor(path:string) {
@@ -21,22 +21,22 @@ export class IkeFile {
         return path.basename(this.path);
     }
 
-    public getParentFile():IkeFile {
+    public getParentFile():LocalFile {
         let parentPath = path.dirname(this.path);
-        return new IkeFile(parentPath);
+        return new LocalFile(parentPath);
     }
 
     public getExtension():string {
         return path.extname(this.path).slice(1);
     }
 
-    public listFiles(filter?:(f:IkeFile)=>boolean):IkeFile[] {
-        let fs:any = require('file-system');
+    public listFiles(filter?:(f:LocalFile)=>boolean):LocalFile[] {
+        let fs:any = require('fs');
         let paths:string[] = fs.readdirSync(this.path);
-        let files:IkeFile[] = [];
+        let files:LocalFile[] = [];
         if (this.isDirectory()) {
             for (let fileName of paths) {
-                let file = new IkeFile(this.path + "/" + fileName);
+                let file = new LocalFile(this.path + "/" + fileName);
                 if (filter && filter(file)){
                     files.push(file);
                 }
@@ -51,12 +51,12 @@ export class IkeFile {
     }
 
     public exists():boolean {
-        let fs:any = require('file-system');
+        let fs:any = require('fs');
         return fs.existsSync(this.path);
     }
 
     public isDirectory() {
-        let fs:any = require('file-system');
+        let fs:any = require('fs');
         return fs.lstatSync(this.path).isDirectory();
     }
 
