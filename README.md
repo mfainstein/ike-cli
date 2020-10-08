@@ -8,9 +8,8 @@ This is... SCA: Scripts As Code.
 * Typed - use the full power of your IDE
 * Create infrastructure instead of scattered scripts
 
-## Example 1:
-
-## Example 2:
+## Basic Usage:
+https://s8.gifyu.com/images/i-like-ike.gif
 
 ## Installation
 ``` npm install ike-cli -g ```
