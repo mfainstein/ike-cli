@@ -4,6 +4,8 @@ import * as Mustache from 'mustache';
 import {LocalFile} from "../utilities/LocalFile";
 import {TextFiles} from "../utilities/TextFiles";
 import {Files} from "../utilities/Files";
+import {ProcessUtils} from "../utilities/ProcessUtils";
+import {ExecutableCommand} from "../core/ExecutableCommand";
 
 @injectable()
 @commandName("create")
@@ -28,7 +30,12 @@ export class CreateCommand extends CommandBase {
         let template: string = TextFiles.read(Files.file("./templates/simple_command.template"));
 
         let classContents: string = Mustache.render(template, commandView);
-        TextFiles.write(Files.file("../IkeScripts/src/"+commandNameToCreate+".ts"), classContents);
+
+        let commandFile:LocalFile = Files.file("../IkeScripts/src/"+className+".ts");
+        let executableCommand:ExecutableCommand = {className: className, name:commandNameToCreate, path:commandFile.getAbsolutePath()}
+        TextFiles.write(commandFile, classContents);
+        ProcessUtils.execSync("idea /Users/markfainstein/PersonalDev/IkeScripts/src/HelloWorldCommand.ts", Files.file(__dirname));
+
 
     }
 

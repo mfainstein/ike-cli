@@ -1,7 +1,9 @@
 import {inject, injectable} from "inversify";
-import {ProjectBuilder} from "../core/ProjectBuilder";
+import {ProjectBuilder} from "../core/projects/ProjectBuilder";
 import {requiredArgs, CommandBase, commandName, description, options, usage} from "ike-framework/out/CommandBase";
-import {LocalFile} from "../utilities/LocalFile";
+import {ProjectsDao} from "../services/dal/ProjectsDao";
+import {Types} from "../Types";
+import {Project} from "../core/projects/Project";
 
 @injectable()
 @commandName("init")
@@ -19,14 +21,18 @@ export class InitCommand extends CommandBase {
 
     private static DEFAULT_PROJECT_NAME = "IkeScripts";
 
+    constructor(@inject(Types.ProjectsDao) private projectsDao:ProjectsDao) {
+        super();
+    }
+
     doExecute(argumentValues: Map<string, string>, optionValues: Map<string, string>): void {
         let path = optionValues.get("path") || "../";
         let name = optionValues.get("projectName") || InitCommand.DEFAULT_PROJECT_NAME;
-        let projectBuilder:ProjectBuilder = new ProjectBuilder(path);
-        console.log(name);
-        let projectFolder:LocalFile = projectBuilder.create(path, name);
-        projectBuilder.installDependencies(projectFolder);
-        //write in ProjectsDao
+        let project:Project = new ProjectBuilder(name, path).create().installDependencies().finalize();
+
+        this.projectsDao.addProject(project);
+        this.projectsDao.setCurrentProject(project.name);
+
     }
 
 

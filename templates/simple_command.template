@@ -1,7 +1,7 @@
-import {args, CommandBase, commandName, description, options, usage} from "ike-framework/out/CommandBase";
+import {requiredArgs, CommandBase, commandName, description, options, usage} from "ike-framework/out/CommandBase";
 
 @commandName("{{name}}")
-@args([])
+@requiredArgs([])
 @options([])
 @usage("ike {{name}}")
 @description("init a scripting project that will contain your scripts.")

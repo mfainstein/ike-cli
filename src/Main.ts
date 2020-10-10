@@ -5,9 +5,6 @@ import {container} from "./Container";
 import {CommandsRegistry} from "./registries/CommandsRegistry";
 import {Types} from "./Types";
 import {CommandsParser} from "./core/CommandsParser";
-import { tsImport } from 'ts-import';
-import {Files} from "./utilities/Files";
-import {LocalFile} from "./utilities/LocalFile";
 
 let commandsRegistry:CommandsRegistry = container.get<CommandsRegistry>(Types.CommandsRegistry);
 let cliProgram:CommandsParser = container.get<CommandsParser>(Types.CommandsParser);

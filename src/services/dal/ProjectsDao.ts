@@ -1,5 +1,15 @@
-export interface ProjectsDao {
-    addProject(name: string, path: string): void;
+import {Project} from "../../core/projects/Project";
 
-    getProject(name: string): void;
+export interface ProjectsDao {
+    addProject(project:Project): Promise<void>;
+
+    getCurrentProjectName(): Promise<string>;
+
+    getCurrentProject(): Promise<Project>;
+
+    setCurrentProject(name: string): Promise<void>;
+
+    getProject(name:string): Promise<Project>;
+
+    getProjects(): Promise<Project[]>;
 }
