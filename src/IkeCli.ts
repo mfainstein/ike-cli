@@ -8,6 +8,9 @@ import {inject, injectable} from "inversify";
 import "reflect-metadata";
 import {CommandsRegistry} from "./registries/CommandsRegistry";
 import {Types} from "./Types";
+import {CommandBaseSync} from "ike-framework/out/CommandBaseSync";
+import {CommandSync} from "ike-framework/out/CommandSync";
+import {CommandAsync} from "ike-framework/out/CommandAsync";
 
 @injectable()
 export class IkeCli implements CommandsParser {
@@ -20,6 +23,14 @@ export class IkeCli implements CommandsParser {
             "Embrace you laziness, DRY, and never Bash Again!";
         this.setDescription();
 
+    }
+
+    private instanceOfCommandSync(instance: any): instance is CommandSync {
+        return instance["executionMode"] == "Sync";
+    }
+
+    private instanceOfCommandAsync(instance: any): instance is CommandAsync {
+        return instance["executionMode"] == "Async";
     }
 
     setDescription(): void {
@@ -44,27 +55,36 @@ export class IkeCli implements CommandsParser {
         return commandArgumentsString;
     }
 
-    async installCommand(command: Command, cliParentCommand: Commander.Command = Commander.program) {
+    async installCommand(command: CommandSync | CommandAsync, cliParentCommand: Commander.Command = Commander.program) {
         //TODO: proper getter for reflection metadata
-        let name: string = Reflect.getMetadata(CommandMetadata.NAME, command.constructor) || command.getDefaultName();
+        let name: string = Reflect.getMetadata(CommandMetadata.Name, command.constructor) || command.getDefaultName();
         let cliCommand: Commander.Command = cliParentCommand.command(name);
 
-        let description: string = Reflect.getMetadata(CommandMetadata.DESCRIPTION, command.constructor) || [];
+        let description: string = Reflect.getMetadata(CommandMetadata.Description, command.constructor) || [];
         cliCommand.description(description);
 
-        let options: CommandOption[] = Reflect.getMetadata(CommandMetadata.OPTIONS, command.constructor) || [];
+        let options: CommandOption[] = Reflect.getMetadata(CommandMetadata.Options, command.constructor) || [];
         for (let option of options) {
             cliCommand.option(option.flag, option.description);
         }
-        let args: string[] = Reflect.getOwnMetadata(CommandMetadata.REQUIRED_ARGS, command.constructor) || [];
+        let args: string[] = Reflect.getOwnMetadata(CommandMetadata.RequiredArgs, command.constructor) || [];
         cliCommand.arguments(this.buildRequiredArguments(args));
 
 
+        if (this.instanceOfCommandSync(command)){
+            cliCommand.action((...args: any) => {
+                command.execute(...args)
+            });
+        }
+        if (this.instanceOfCommandAsync(command)){
+            cliCommand.action(async(...args: any) => {
+                await command.execute(...args)
+            });
+        }
+
         //TODO: should be executed through a controller which saves the execution history
-        cliCommand.action(async (...args: any) => {
-            await command.execute(...args)
-        });
-        this.commandsRegistry.setCommanderCommand(name, cliCommand);
+
+            this.commandsRegistry.setCommanderCommand(name, cliCommand);
 
         for (let subCommand of command.getSubCommands()) {
             this.installCommand(subCommand, cliCommand);

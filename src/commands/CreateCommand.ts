@@ -6,15 +6,16 @@ import {TextFiles} from "../utilities/TextFiles";
 import {Files} from "../utilities/Files";
 import {ProcessUtils} from "../utilities/ProcessUtils";
 import {ExecutableCommand} from "../core/ExecutableCommand";
+import {CommandBaseAsync} from "ike-framework/out/CommandBaseAsync";
 
 @injectable()
 @commandName("create")
 @requiredArgs(["name"])
 @description("Create an executable command.")
 @usage("ike create")
-export class CreateCommand extends CommandBase {
+export class CreateCommand extends CommandBaseAsync {
 
-    doExecute(argumentValues: Map<string, string>, optionValues: Map<string, string>): void {
+    async doExecute(argumentValues: Map<string, string>, optionValues: Map<string, string>): Promise<void> {
 
         let commandNameToCreate: string = argumentValues.get("name") || "";
         if (commandNameToCreate == "") {
@@ -35,7 +36,6 @@ export class CreateCommand extends CommandBase {
         let executableCommand:ExecutableCommand = {className: className, name:commandNameToCreate, path:commandFile.getAbsolutePath()}
         TextFiles.write(commandFile, classContents);
         ProcessUtils.execSync("idea /Users/markfainstein/PersonalDev/IkeScripts/src/HelloWorldCommand.ts", Files.file(__dirname));
-
 
     }
 

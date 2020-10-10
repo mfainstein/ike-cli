@@ -1,4 +1,4 @@
-import {requiredArgs, CommandBase, commandName, description, options, usage} from "ike-framework/out/CommandBase";
+import {requiredArgs, CommandBaseSync, commandName, description, options, usage} from "ike-framework/out/CommandBaseSync";
 
 @commandName("{{name}}")
 @requiredArgs([])
@@ -6,7 +6,7 @@ import {requiredArgs, CommandBase, commandName, description, options, usage} fro
 @usage("ike {{name}}")
 @description("init a scripting project that will contain your scripts.")
 
-export class {{className}} extends CommandBase {
+export class {{className}} extends CommandBaseSync {
 
     doExecute(argumentValues: Map<string, string>, optionValues: Map<string, string>): void {
         //TODO: take it forward!

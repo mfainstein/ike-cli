@@ -4,6 +4,7 @@ import {requiredArgs, CommandBase, commandName, description, options, usage} fro
 import {ProjectsDao} from "../services/dal/ProjectsDao";
 import {Types} from "../Types";
 import {Project} from "../core/projects/Project";
+import {CommandBaseAsync} from "ike-framework/out/CommandBaseAsync";
 
 @injectable()
 @commandName("init")
@@ -17,7 +18,7 @@ import {Project} from "../core/projects/Project";
 @usage("ike init")
 @description("init a scripting project that will contain your scripts.")
 
-export class InitCommand extends CommandBase {
+export class InitCommand extends CommandBaseAsync {
 
     private static DEFAULT_PROJECT_NAME = "IkeScripts";
 
@@ -25,7 +26,7 @@ export class InitCommand extends CommandBase {
         super();
     }
 
-    doExecute(argumentValues: Map<string, string>, optionValues: Map<string, string>): void {
+    async doExecute(argumentValues: Map<string, string>, optionValues: Map<string, string>): Promise<void> {
         let path = optionValues.get("path") || "../";
         let name = optionValues.get("projectName") || InitCommand.DEFAULT_PROJECT_NAME;
         let project:Project = new ProjectBuilder(name, path).create().installDependencies().finalize();
