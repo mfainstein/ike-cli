@@ -1,5 +1,6 @@
 import levelup from 'levelup'
 import leveldown, {LevelDown} from 'leveldown'
+import encode from 'encoding-down'
 import {KeyValueDatabase} from "./KeyValueDatabase";
 import {injectable} from "inversify";
 import LevelUp from "levelup";
@@ -14,7 +15,7 @@ export class LevelUpDatabase implements KeyValueDatabase {
 
     constructor() {
         //this.adapter = new FileSync<JsonDatabaseSchema>(JsonDatabaseImpl.DATABASE_FILE_NAME);
-        this.db = levelup(leveldown(LevelUpDatabase.DATABASE_FILE_NAME), {valueEncoding: 'json'});
+        this.db = levelup(encode(leveldown(LevelUpDatabase.DATABASE_FILE_NAME), {valueEncoding: 'json'}));
     }
 
     get(dimension: KeyValueDatabaseDimension, uniqueId?: string): Promise<any> {

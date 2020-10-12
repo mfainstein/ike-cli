@@ -1,10 +1,11 @@
-import {requiredArgs, CommandBaseSync, commandName, description, options, usage} from "ike-framework/out/CommandBaseSync";
+import {commandName, description, options, requiredArgs, usage} from "ike-framework/out/CommandBase";
+import {CommandBaseSync} from "ike-framework/out/CommandBaseSync";
 
 @commandName("{{name}}")
 @requiredArgs([])
 @options([])
 @usage("ike {{name}}")
-@description("init a scripting project that will contain your scripts.")
+@description("no description for {{name}}")
 
 export class {{className}} extends CommandBaseSync {
 

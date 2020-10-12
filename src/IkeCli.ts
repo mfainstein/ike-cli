@@ -55,8 +55,10 @@ export class IkeCli implements CommandsParser {
         return commandArgumentsString;
     }
 
-    async installCommand(command: CommandSync | CommandAsync, cliParentCommand: Commander.Command = Commander.program) {
+    async installCommand(command: Command, cliParentCommand: Commander.Command = Commander.program) {
         //TODO: proper getter for reflection metadata
+
+        await command.setup();
         let name: string = Reflect.getMetadata(CommandMetadata.Name, command.constructor) || command.getDefaultName();
         let cliCommand: Commander.Command = cliParentCommand.command(name);
 
@@ -69,7 +71,6 @@ export class IkeCli implements CommandsParser {
         }
         let args: string[] = Reflect.getOwnMetadata(CommandMetadata.RequiredArgs, command.constructor) || [];
         cliCommand.arguments(this.buildRequiredArguments(args));
-
 
         if (this.instanceOfCommandSync(command)){
             cliCommand.action((...args: any) => {

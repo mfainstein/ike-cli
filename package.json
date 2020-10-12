@@ -32,6 +32,7 @@
   "license": "GPL-3.0",
   "devDependencies": {
     "@types/chai": "^4.2.12",
+    "@types/encoding-down": "^5.0.0",
     "@types/inquirer": "^7.3.1",
     "@types/leveldown": "^4.0.2",
     "@types/levelup": "^4.3.0",
@@ -45,6 +46,7 @@
   },
   "dependencies": {
     "commander": "^6.1.0",
+    "encoding-down": "^6.3.0",
     "fs-extra": "^9.0.1",
     "ike-framework": "file:../IkeFramework",
     "inquirer": "^7.3.3",

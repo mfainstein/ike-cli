@@ -16,7 +16,7 @@ export class CommandsRegistryImpl implements CommandsRegistry {
         this.commanderCommandByName = new Map();
         for (let command of commands) {
             let name: string =
-                Reflect.getMetadata(CommandMetadata.NAME, command.constructor) || command.getDefaultName();
+                Reflect.getMetadata(CommandMetadata.Name, command.constructor) || command.getDefaultName();
             this.commandByName.set(name, command);
         }
     }

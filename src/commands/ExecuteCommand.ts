@@ -1,28 +1,60 @@
-import {injectable} from "inversify";
+import {inject, injectable} from "inversify";
 import * as Commander from 'commander';
-import {CommandBase, commandName, description, requiredArgs, usage} from "ike-framework/out/CommandBase";
+import {CommandBase, commandName, description, options, requiredArgs, usage} from "ike-framework/out/CommandBase";
 import {tsImport} from "ts-import";
 import {CommandBaseAsync} from "ike-framework/out/CommandBaseAsync";
+import {Types} from "../Types";
+import {ExecutableCommandsDao} from "../services/dal/ExecutableCommandsDao";
+import {ExecutableCommand} from "../core/ExecutableCommand";
+import {Command} from "ike-framework/out/Command";
 
 @injectable()
 @commandName("execute")
 @requiredArgs(["name"])
+// TODO: @options([{"name":"noCompile", "flag": "-nc, --noCompile", description: "do not compile"},]) ?
 @description("Execute a command.")
 @usage("ike execute <CommandName>")
 export class ExecuteCommand extends CommandBaseAsync {
-    private registry: any = {};
 
-    constructor() {
+    private commandClassNames:string[];
+
+    constructor(@inject(Types.ExecutableCommandsDao) private executableCommandsDao: ExecutableCommandsDao) {
         super();
+        this.commandClassNames = [];
 
+    }
+
+    async setup(): Promise<void> {
+
+        await this.importSubCommands();
     }
 
     async importSubCommands(): Promise<void> {
-
+        let dir = process.cwd();
+        let executableCommands: ExecutableCommand[] = await this.executableCommandsDao.getAll();
+        let compilePromises: Promise<any>[] = [];
+        for (let executableCommand of executableCommands) {
+            //TODO: should compile all sub commands every time (on change) or only the relevant command running?
+            //TODO: if only the relevant command running, then the metadata might be out dated.
+            this.commandClassNames.push(executableCommand.className);
+            compilePromises.push(tsImport.compile(executableCommand.path));
+            process.chdir(dir); //TODO: real hack, should understand why this happens...
+        }
+        //TODO: the compiled object contains the class as part of its exports
+        //TODO: find a better way to extract the Command so the type Command will take effect.
+        let commands: any[] = await Promise.all(compilePromises);
+        let index:number = 0;
+        for (let commandExports of commands) {
+            let commandClassName:string = this.commandClassNames[index];
+            let command:Command = new commandExports[commandClassName];
+            this.addSubCommand(command);
+            index++;
+        }
     }
 
     async doExecute(argumentValues: Map<string, string>, optionValues: Map<string, string>): Promise<void> {
-        this.registry["HelloWorld"]();
+        //let commandName:string = argumentValues.get("name") || "";
+
 
     }
 

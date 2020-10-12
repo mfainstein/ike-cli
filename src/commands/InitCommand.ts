@@ -5,6 +5,7 @@ import {ProjectsDao} from "../services/dal/ProjectsDao";
 import {Types} from "../Types";
 import {Project} from "../core/projects/Project";
 import {CommandBaseAsync} from "ike-framework/out/CommandBaseAsync";
+import {ProcessUtils} from "../utilities/ProcessUtils";
 
 @injectable()
 @commandName("init")
@@ -27,12 +28,12 @@ export class InitCommand extends CommandBaseAsync {
     }
 
     async doExecute(argumentValues: Map<string, string>, optionValues: Map<string, string>): Promise<void> {
-        let path = optionValues.get("path") || "../";
+        let path = optionValues.get("path") || "";
         let name = optionValues.get("projectName") || InitCommand.DEFAULT_PROJECT_NAME;
-        let project:Project = new ProjectBuilder(name, path).create().installDependencies().finalize();
+        let project:Project = new ProjectBuilder(name, process.cwd()+path).create().installDependencies().finalize();
 
-        this.projectsDao.addProject(project);
-        this.projectsDao.setCurrentProject(project.name);
+        await this.projectsDao.addProject(project);
+        await this.projectsDao.setCurrentProject(project.name);
 
     }
 
