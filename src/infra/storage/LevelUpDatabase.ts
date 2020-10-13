@@ -5,17 +5,19 @@ import {KeyValueDatabase} from "./KeyValueDatabase";
 import {injectable} from "inversify";
 import LevelUp from "levelup";
 import {KeyValueDatabaseDimension} from "./KeyValueDatabaseDimension";
+import {Files} from "../../utilities/Files";
 
 @injectable()
 export class LevelUpDatabase implements KeyValueDatabase {
 
-    private static DATABASE_FILE_NAME = "./database";
+    private static DATABASE_FILE_NAME = "database";
     //private readonly adapter: low.AdapterSync<JsonDatabaseSchema>;
     private db: any;
 
     constructor() {
         //this.adapter = new FileSync<JsonDatabaseSchema>(JsonDatabaseImpl.DATABASE_FILE_NAME);
-        this.db = levelup(encode(leveldown(LevelUpDatabase.DATABASE_FILE_NAME), {valueEncoding: 'json'}));
+        let databasePath:string = Files.file(LevelUpDatabase.DATABASE_FILE_NAME).getAbsolutePath();
+        this.db = levelup(encode(leveldown(databasePath), {valueEncoding: 'json'}));
     }
 
     get(dimension: KeyValueDatabaseDimension, uniqueId?: string): Promise<any> {

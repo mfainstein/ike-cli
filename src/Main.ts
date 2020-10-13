@@ -5,7 +5,9 @@ import {container} from "./Container";
 import {CommandsRegistry} from "./registries/CommandsRegistry";
 import {Types} from "./Types";
 import {CommandsParser} from "./core/CommandsParser";
+import {Files} from "./utilities/Files";
 
+Files.setRootPath(__dirname);
 let commandsRegistry:CommandsRegistry = container.get<CommandsRegistry>(Types.CommandsRegistry);
 let cliProgram:CommandsParser = container.get<CommandsParser>(Types.CommandsParser);
 

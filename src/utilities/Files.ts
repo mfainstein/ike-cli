@@ -2,8 +2,8 @@ declare var require: any;
 import {LocalFile} from "./LocalFile";
 import * as path from 'path';
 
-export interface IConfig{
-    placeholders:Map<string, string>;
+export interface IConfig {
+    placeholders: Map<string, string>;
 }
 
 export class Files {
@@ -11,11 +11,12 @@ export class Files {
     private static fs = require('fs');
     private static fs_extra = require('fs-extra');
     private static placeHolders: Map<string, string> = new Map<string, string>();
+    private static rooPath: string;
 
-    private static getPlaceHolderAbsolutePath(placeholderRelativePath:string):string{
-        let mainAbsolutePath:string = path.join(__dirname, "../../../");
+    private static getPlaceHolderAbsolutePath(placeholderRelativePath: string): string {
+        let mainAbsolutePath: string = path.join(__dirname, "../../../");
         let joined = path.join(mainAbsolutePath, placeholderRelativePath);
-        let root:string = path.normalize(joined);
+        let root: string = path.normalize(joined);
         return root;
     }
 
@@ -23,14 +24,22 @@ export class Files {
         return placeholder.startsWith("$") && placeholder.endsWith("$") && placeholder.length > 3;
     }
 
-    public static setPlaceholders(config:IConfig){
-        for (let placeholderName in config.placeholders){
+    static getRootPath(): string {
+        return this.rooPath;
+    }
+
+    static setRootPath(rootPath: string): void {
+        this.rooPath = this.combinePaths(rootPath, "../");
+    }
+
+    public static setPlaceholders(config: IConfig) {
+        for (let placeholderName in config.placeholders) {
             this.setPlaceholder(placeholderName, config.placeholders.get(placeholderName) || "");
         }
     }
 
-    public static setPlaceholder(placeholderName: string, placeholderPath:string): boolean {
-        let placeholderAbsolutePath:string = this.getPlaceHolderAbsolutePath(placeholderPath);
+    public static setPlaceholder(placeholderName: string, placeholderPath: string): boolean {
+        let placeholderAbsolutePath: string = this.getPlaceHolderAbsolutePath(placeholderPath);
         placeholderName = placeholderName.toUpperCase();
         if (!this.isPlaceholderValid(placeholderName)) {
             return false;
@@ -44,7 +53,7 @@ export class Files {
         return path.join(...paths);
     }
 
-    public static normalize(pathToNormalize:string):string{
+    public static normalize(pathToNormalize: string): string {
         return path.normalize(pathToNormalize);
     }
 
@@ -67,9 +76,8 @@ export class Files {
     public static file(pathOrFile: any, path?: string): LocalFile {
         let basePath: string = "";
         if (this.isFile(pathOrFile)) {
-            basePath = (<LocalFile>pathOrFile).getAbsolutePath();
-        }
-        else {
+            basePath = (<LocalFile>pathOrFile).getPath();
+        } else {
             basePath = <string>pathOrFile;
         }
         if (!path) {
@@ -84,7 +92,7 @@ export class Files {
         return file;
     }
 
-    public static copyFolder(source:LocalFile, target:LocalFile): void{
+    public static copyFolder(source: LocalFile, target: LocalFile): void {
         //noinspection TypeScriptUnresolvedFunction
         this.fs_extra.copySync(source.getAbsolutePath(), target.getAbsolutePath());
     }
@@ -109,7 +117,7 @@ export class Files {
     }
 
     public static writeFile(file: LocalFile): void {
-        this.fs.writeFile(file.getAbsolutePath(), 'test', ()=> {
+        this.fs.writeFile(file.getAbsolutePath(), 'test', () => {
         })
     }
 
@@ -117,11 +125,10 @@ export class Files {
         let stringContent: string;
         if (typeof content == "string") {
             stringContent = content;
-        }
-        else {
+        } else {
             stringContent = JSON.stringify(content, null, 4);
         }
-        let md5 =  require('md5');
+        let md5 = require('md5');
         return md5(stringContent);
     }
 
@@ -129,9 +136,13 @@ export class Files {
         this.fs.unlinkSync(fileToDelete.getAbsolutePath());
     }
 
-    public static mkdir(file:LocalFile){
-        let mkdirp:any = require('mkdirp');
+    public static mkdir(file: LocalFile) {
+        let mkdirp: any = require('mkdirp');
         //TODO: better with fs
         mkdirp.sync(file.getAbsolutePath());
+    }
+
+    public static relativePath(source: string, target: string): string {
+        return path.relative(source, target);
     }
 }

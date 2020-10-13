@@ -6,6 +6,8 @@ import {Types} from "../Types";
 import {Project} from "../core/projects/Project";
 import {CommandBaseAsync} from "ike-framework/out/CommandBaseAsync";
 import {ProcessUtils} from "../utilities/ProcessUtils";
+import {LocalFile} from "../utilities/LocalFile";
+import {Files} from "../utilities/Files";
 
 @injectable()
 @commandName("init")
@@ -27,10 +29,51 @@ export class InitCommand extends CommandBaseAsync {
         super();
     }
 
+    private resolveCacheFolder(projectFolder:LocalFile):LocalFile {
+        let projectAbsolutePath:string = projectFolder.getAbsolutePath();
+        return Files.file("/node_modules/ts-import/cache/", projectAbsolutePath);
+    }
+
+
+    /**
+     * TODO: there should be a whole project watcher daemon service...
+     */
+    async setup(): Promise<void> {
+        let project:Project;
+        try{
+            project = await this.projectsDao.getCurrentProject();
+            let projectFolder:LocalFile = Files.file(project.parentFolderPath, project.name);
+            let scriptFile:LocalFile = Files.file(projectFolder, "tscWatch.js");
+            let lockFile:LocalFile = Files.file(Files.file(project.parentFolderPath, project.name), "TSC_WATCH_LOCK");
+            let cache:LocalFile = this.resolveCacheFolder(projectFolder);
+            if (lockFile.exists()){
+                return;
+            }
+
+            let spawn = require('child_process').spawn;
+            spawn('node', [scriptFile.getAbsolutePath(), cache.getAbsolutePath()], {
+                cwd: projectFolder.getAbsolutePath(),
+                stdio: 'ignore',
+                detached: true
+            }).unref();
+        }
+        catch (e) {
+            //do nothing
+        }
+
+    }
+
     async doExecute(argumentValues: Map<string, string>, optionValues: Map<string, string>): Promise<void> {
-        let path = optionValues.get("path") || "";
+        let path = optionValues.get("path") || "../";
         let name = optionValues.get("projectName") || InitCommand.DEFAULT_PROJECT_NAME;
-        let project:Project = new ProjectBuilder(name, process.cwd()+path).create().installDependencies().finalize();
+        let relativePath = Files.relativePath(Files.getRootPath(), Files.file(process.cwd(), path).getPath());
+        //TODO: path building is needed
+        let project:Project = new ProjectBuilder(name, relativePath)
+            .createFolders()
+            .copyAddons()
+            .installDependencies()
+            .initTypescriptCompiler()
+            .finalize();
 
         await this.projectsDao.addProject(project);
         await this.projectsDao.setCurrentProject(project.name);

@@ -87,6 +87,7 @@ export class IkeCli implements CommandsParser {
 
             this.commandsRegistry.setCommanderCommand(name, cliCommand);
 
+        //TODO: should use Promise.all...
         for (let subCommand of command.getSubCommands()) {
             this.installCommand(subCommand, cliCommand);
         }

@@ -11,7 +11,9 @@ import {Types} from "../Types";
 import {ProjectsDao} from "../services/dal/ProjectsDao";
 import {Project} from "../core/projects/Project";
 import {ExecutableCommandsDao} from "../services/dal/ExecutableCommandsDao";
+import ora from 'ora';
 import {tsImport} from "ts-import";
+import {Spinner} from "ora";
 
 @injectable()
 @commandName("create")
@@ -31,12 +33,19 @@ export class CreateCommand extends CommandBaseAsync {
     }
 
 
+    /**
+     * TODO: separate to a few methods
+     * @param argumentValues
+     * @param optionValues
+     */
     async doExecute(argumentValues: Map<string, string>, optionValues: Map<string, string>): Promise<void> {
-
         let commandNameToCreate: string = argumentValues.get("name") || "";
         if (commandNameToCreate == "") {
             throw new Error("Please provide a command name!");
         }
+
+        let spinner:ora.Ora = ora("Preparing...").start();
+
         let className = this.capitalizeFirstLetter(commandNameToCreate) + "Command";
 
         let commandView: any = {
@@ -45,7 +54,8 @@ export class CreateCommand extends CommandBaseAsync {
         };
 
         //TODO: TemplatesManager should handle this
-        let template: string = TextFiles.read(Files.file("./templates/simple_command.template"));
+        let templateFile:LocalFile = Files.file("./templates/simple_command.template");
+        let template: string = TextFiles.read(templateFile);
 
         let classContents: string = Mustache.render(template, commandView);
         let project:Project;
@@ -56,14 +66,18 @@ export class CreateCommand extends CommandBaseAsync {
             throw new Error("No projects available. Use ike init <projectName> in the desired path to setup a project")
         }
         //TODO: probably the Project should be a class with getSourceFolder and so on, for the ProjectBuilder to set.
-        let commandFile:LocalFile = Files.file(Files.file(project.folderPath, project.name), "src/"+className+".ts");
-        let executableCommand:ExecutableCommand = {className: className, name:commandNameToCreate, path:commandFile.getAbsolutePath()};
+        let commandFile:LocalFile = Files.file(Files.file(project.parentFolderPath, project.name), "src/"+className+".ts");
+        spinner.text = "Blueprinting....";
+        let executableCommand:ExecutableCommand = {className: className, name:commandNameToCreate, path:commandFile.getPath()};
         TextFiles.write(commandFile, classContents);
+
         //TODO: should move to a utility - is this needed?
         //await tsImport.compile(executableCommand.path);
         await this.executableCommandsDao.add(executableCommand);
         //TODO: should move to a utility
-        ProcessUtils.execSync("idea "+commandFile.getAbsolutePath(), Files.file(__dirname));
+        spinner.text = "Launching your favorite IDE...";
+        ProcessUtils.execSync("idea "+commandFile.getAbsolutePath(), Files.file(""));
+        spinner.stop();
     }
 
 }

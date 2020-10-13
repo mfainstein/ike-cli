@@ -18,11 +18,15 @@ import {ProjectsDao} from "./services/dal/ProjectsDao";
 import {ProjectsDaoKeyValue} from "./infra/dal/ProjectsDaoKeyValue";
 import {ExecutableCommandsDao} from "./services/dal/ExecutableCommandsDao";
 import {ExecutableCommandsDaoKeyValue} from "./infra/dal/ExecutableCommandsDaoKeyValue";
+import {CommandBaseSync} from "ike-framework/out/CommandBaseSync";
+import {CommandBaseAsync} from "ike-framework/out/CommandBaseAsync";
 
 const container = new Container();
 
 //decorate the imported CommandBase
 decorate(injectable(), CommandBase);
+decorate(injectable(), CommandBaseSync);
+decorate(injectable(), CommandBaseAsync);
 
 //TODO: separate to a three different containers: App, Domain ?, Infra
 

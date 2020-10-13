@@ -8,7 +8,7 @@ export class ProjectBuilder {
 
     constructor(name: string, folderPath: string) {
         this.validate(folderPath);
-        this.project = {name: name, folderPath:folderPath}
+        this.project = {name: name, parentFolderPath:folderPath}
     }
 
     validate(path: string): void {
@@ -16,13 +16,21 @@ export class ProjectBuilder {
     }
 
     private getProjectFolder():LocalFile {
-        return Files.file(this.project.folderPath, this.project.name);
+        return Files.file(this.project.parentFolderPath, this.project.name);
     }
 
-    create(): ProjectBuilder {
+    public copyAddons(): ProjectBuilder {
         let projectFolder:LocalFile = this.getProjectFolder();
+        Files.copyFile(Files.file("addons/tscWatch.js"), Files.file(projectFolder, "tscWatch.js"));
+        return this;
+    }
+
+    createFolders(): ProjectBuilder {
+        let projectFolder:LocalFile = this.getProjectFolder();
+        let srcFolder:LocalFile = Files.file(projectFolder, "src/");
         Files.mkdir(projectFolder);
-        Files.mkdir(Files.file(projectFolder, "src"));
+        Files.mkdir(srcFolder);
+        this.project.srcFolderPath = srcFolder.getPath();
         return this;
     }
 
@@ -30,9 +38,16 @@ export class ProjectBuilder {
         let projectFolder:LocalFile = this.getProjectFolder();
         ProcessUtils.execSync("npm init -y", projectFolder);
         ProcessUtils.execSync("npm install typescript --save-dev", projectFolder);
-        //ProcessUtils.execSync("npm install ike-framework");
+        //TODO: this is about to be simply 'npm install ike-framework' once published
+        ProcessUtils.execSync("npm install ../IkeFramework", projectFolder);
         return this;
 
+    }
+
+    initTypescriptCompiler(): ProjectBuilder {
+        let projectFolder:LocalFile = this.getProjectFolder();
+        ProcessUtils.execSync("tsc --init --experimentalDecorators", projectFolder);
+        return this;
     }
 
     finalize(): Project {
