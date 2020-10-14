@@ -2,7 +2,7 @@
 Create TS/JS scripts right from the console and straight to a cli utility. Embrace you laziness, DRY, and never Bash Again!
 
 ## Basic Usage:
-![Ike Basic Usage](https://s8.gifyu.com/images/ike-usage.gif)
+![Ike Basic Usage](https://s8.gifyu.com/images/ike-usage-flow.gif)
 
 ## The Itch
 You are working on that great software project... And you need to import all those images (from time to time) and you need to resize them according to a specific logic.
