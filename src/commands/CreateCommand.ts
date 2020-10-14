@@ -68,7 +68,7 @@ export class CreateCommand extends CommandBaseAsync {
         //TODO: probably the Project should be a class with getSourceFolder and so on, for the ProjectBuilder to set.
         let commandFile:LocalFile = Files.file(Files.file(project.parentFolderPath, project.name), "src/"+className+".ts");
         spinner.text = "Blueprinting....";
-        let executableCommand:ExecutableCommand = {className: className, name:commandNameToCreate, path:commandFile.getPath()};
+        let executableCommand:ExecutableCommand = {className: className, name:commandNameToCreate, path:commandFile.getAbsolutePath()};
         TextFiles.write(commandFile, classContents);
 
         //TODO: should move to a utility - is this needed?

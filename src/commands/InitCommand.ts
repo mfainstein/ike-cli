@@ -29,8 +29,8 @@ export class InitCommand extends CommandBaseAsync {
         super();
     }
 
-    private resolveCacheFolder(projectFolder:LocalFile):LocalFile {
-        let projectAbsolutePath:string = projectFolder.getAbsolutePath();
+    private resolveCacheFolder(project:Project):LocalFile {
+        let projectAbsolutePath:string =Files.file(project.srcFolderPath).getAbsolutePath();
         return Files.file("/node_modules/ts-import/cache/", projectAbsolutePath);
     }
 
@@ -44,8 +44,9 @@ export class InitCommand extends CommandBaseAsync {
             project = await this.projectsDao.getCurrentProject();
             let projectFolder:LocalFile = Files.file(project.parentFolderPath, project.name);
             let scriptFile:LocalFile = Files.file(projectFolder, "tscWatch.js");
-            let lockFile:LocalFile = Files.file(Files.file(project.parentFolderPath, project.name), "TSC_WATCH_LOCK");
-            let cache:LocalFile = this.resolveCacheFolder(projectFolder);
+            let lockFile:LocalFile = Files.file(projectFolder, "TSC_WATCH_LOCK");
+            let cache:LocalFile = this.resolveCacheFolder(project);
+            console.log("cache "+cache.getAbsolutePath());
             if (lockFile.exists()){
                 return;
             }
@@ -64,10 +65,9 @@ export class InitCommand extends CommandBaseAsync {
     }
 
     async doExecute(argumentValues: Map<string, string>, optionValues: Map<string, string>): Promise<void> {
-        let path = optionValues.get("path") || "../";
+        let path = optionValues.get("path") || ".";
         let name = optionValues.get("projectName") || InitCommand.DEFAULT_PROJECT_NAME;
         let relativePath = Files.relativePath(Files.getRootPath(), Files.file(process.cwd(), path).getPath());
-        //TODO: path building is needed
         let project:Project = new ProjectBuilder(name, relativePath)
             .createFolders()
             .copyAddons()

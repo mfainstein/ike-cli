@@ -58,6 +58,7 @@ export class ExecuteCommand extends CommandBaseAsync {
             index++;
         }
         spinner.stop();
+        spinner.clear();
         console.log("Execution Time:"+ (Date.now()/1000-nowInSecs));
     }
 
