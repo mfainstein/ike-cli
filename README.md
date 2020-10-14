@@ -20,7 +20,7 @@ Then just a few hours later you find another task to automate. Well you decide t
 
 ## More Features
 * Automatic CLI generation, including help, autocompletion, arguments, options...
-* Use the Ike Framework to efficiently develop your scripts and infrastructure.
+* Use the [Ike Framework](https://github.com/mfainstein/ike-framework) to efficiently develop your scripts and infrastructure.
 * Deploy your contained CLIs easily.
 * Networking layer.
 
