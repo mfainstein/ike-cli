@@ -14,8 +14,12 @@ export class ExecutableCommandsDaoKeyValue implements ExecutableCommandsDao {
         return await this.keyValueDatabase.getAll(KeyValueDatabaseDimension.ExecutableCommands)
     }
 
-    async add(command:ExecutableCommand): Promise<void> {
+    async add(command: ExecutableCommand): Promise<void> {
         return await this.keyValueDatabase.put(KeyValueDatabaseDimension.ExecutableCommands, command, command.name);
+    }
+
+    async get(commandName: string): Promise<ExecutableCommand> {
+        return await this.keyValueDatabase.get(KeyValueDatabaseDimension.ExecutableCommands, commandName);
     }
 
 }

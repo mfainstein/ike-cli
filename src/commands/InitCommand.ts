@@ -1,10 +1,10 @@
 import {inject, injectable} from "inversify";
 import {ProjectBuilder} from "../core/projects/ProjectBuilder";
-import {requiredArgs, CommandBase, commandName, description, options, usage} from "ike-framework/out/CommandBase";
+import {requiredArgs, CommandBase, commandName, description, options, usage} from "ike-framework/out/core/CommandBase";
 import {ProjectsDao} from "../services/dal/ProjectsDao";
 import {Types} from "../Types";
 import {Project} from "../core/projects/Project";
-import {CommandBaseAsync} from "ike-framework/out/CommandBaseAsync";
+import {CommandBaseAsync} from "ike-framework/out/core/CommandBaseAsync";
 import {ProcessUtils} from "../utilities/ProcessUtils";
 import {LocalFile} from "../utilities/LocalFile";
 import {Files} from "../utilities/Files";
@@ -46,7 +46,6 @@ export class InitCommand extends CommandBaseAsync {
             let scriptFile:LocalFile = Files.file(projectFolder, "tscWatch.js");
             let lockFile:LocalFile = Files.file(projectFolder, "TSC_WATCH_LOCK");
             let cache:LocalFile = this.resolveCacheFolder(project);
-            console.log("cache "+cache.getAbsolutePath());
             if (lockFile.exists()){
                 return;
             }

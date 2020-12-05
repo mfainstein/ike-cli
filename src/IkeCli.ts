@@ -1,16 +1,16 @@
 import {CommandsParser} from "./core/CommandsParser";
-import {Command} from "ike-framework/out/Command";
-import {CommandMetadata} from "ike-framework/out/CommandMetadata";
-import {CommandOption} from "ike-framework/out/CommandOption";
+import {Command} from "ike-framework/out/core/Command";
+import {CommandMetadata} from "ike-framework/out/core/CommandMetadata";
+import {CommandOption} from "ike-framework/out/core/CommandOption";
 import * as Commander from 'commander';
 import {inject, injectable} from "inversify";
 
 import "reflect-metadata";
 import {CommandsRegistry} from "./registries/CommandsRegistry";
 import {Types} from "./Types";
-import {CommandBaseSync} from "ike-framework/out/CommandBaseSync";
-import {CommandSync} from "ike-framework/out/CommandSync";
-import {CommandAsync} from "ike-framework/out/CommandAsync";
+import {CommandBaseSync} from "ike-framework/out/core/CommandBaseSync";
+import {CommandSync} from "ike-framework/out/core/CommandSync";
+import {CommandAsync} from "ike-framework/out/core/CommandAsync";
 
 @injectable()
 export class IkeCli implements CommandsParser {

@@ -1,12 +1,12 @@
 import {inject, injectable} from "inversify";
 import * as Commander from 'commander';
-import {CommandBase, commandName, description, options, requiredArgs, usage} from "ike-framework/out/CommandBase";
+import {CommandBase, commandName, description, options, requiredArgs, usage} from "ike-framework/out/core/CommandBase";
 import {tsImport, Compiler} from "ts-import";
-import {CommandBaseAsync} from "ike-framework/out/CommandBaseAsync";
+import {CommandBaseAsync} from "ike-framework/out/core/CommandBaseAsync";
 import {Types} from "../Types";
 import {ExecutableCommandsDao} from "../services/dal/ExecutableCommandsDao";
 import {ExecutableCommand} from "../core/ExecutableCommand";
-import {Command} from "ike-framework/out/Command";
+import {Command} from "ike-framework/out/core/Command";
 import ora from 'ora';
 import tsNode from "ts-node";
 
@@ -59,7 +59,8 @@ export class ExecuteCommand extends CommandBaseAsync {
         }
         spinner.stop();
         spinner.clear();
-        console.log("Execution Time:"+ (Date.now()/1000-nowInSecs));
+        //add a parameter and better handling of execution time
+        //console.log("Execution Time:"+ (Date.now()/1000-nowInSecs));
     }
 
     async doExecute(argumentValues: Map<string, string>, optionValues: Map<string, string>): Promise<void> {

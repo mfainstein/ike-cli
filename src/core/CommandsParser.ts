@@ -1,4 +1,4 @@
-import {Command} from "ike-framework/out/Command";
+import {Command} from "ike-framework/out/core/Command";
 export interface CommandsParser {
 
     description: string;

@@ -39,7 +39,7 @@ export class ProjectBuilder {
         ProcessUtils.execSync("npm init -y", projectFolder);
         ProcessUtils.execSync("npm install typescript --save-dev", projectFolder);
         //TODO: this is about to be simply 'npm install ike-framework' once published
-        //ProcessUtils.execSync("npm install ../IkeFramework", projectFolder);
+        ProcessUtils.execSync("npm install ike-framework --save", projectFolder);
         return this;
 
     }

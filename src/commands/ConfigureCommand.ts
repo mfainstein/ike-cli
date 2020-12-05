@@ -1,6 +1,6 @@
 import {inject, injectable} from "inversify";
-import {CommandBase} from "ike-framework/out/CommandBase";
-import {CommandBaseSync} from "ike-framework/out/CommandBaseSync";
+import {CommandBase} from "ike-framework/out/core/CommandBase";
+import {CommandBaseSync} from "ike-framework/out/core/CommandBaseSync";
 
 
 @injectable()

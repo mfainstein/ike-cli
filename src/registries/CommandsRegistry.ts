@@ -1,4 +1,4 @@
-import {Command} from "ike-framework/out/Command";
+import {Command} from "ike-framework/out/core/Command";
 import * as Commander from 'commander';
 export interface CommandsRegistry {
     getCommands(): Command[];
