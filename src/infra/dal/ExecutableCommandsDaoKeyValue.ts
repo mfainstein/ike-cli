@@ -22,4 +22,8 @@ export class ExecutableCommandsDaoKeyValue implements ExecutableCommandsDao {
         return await this.keyValueDatabase.get(KeyValueDatabaseDimension.ExecutableCommands, commandName);
     }
 
+    async remove(commandName: string): Promise<void> {
+        return await this.keyValueDatabase.delete(KeyValueDatabaseDimension.ExecutableCommands, commandName)
+    }
+
 }

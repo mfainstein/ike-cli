@@ -6,6 +6,8 @@ export interface KeyValueDatabase {
 
     get(dimension: KeyValueDatabaseDimension, uniqueId?: string): Promise<any>;
 
+    delete(dimension: KeyValueDatabaseDimension, uniqueId?: string): Promise<any>;
+
     getAll(dimension: KeyValueDatabaseDimension): Promise<any[]>;
 
 }

@@ -6,4 +6,6 @@ export interface ExecutableCommandsDao {
     add(command: ExecutableCommand): Promise<void>;
 
     get(commandName: string): Promise<ExecutableCommand>;
+
+    remove(commandName: string): Promise<void>;
 }

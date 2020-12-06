@@ -20,6 +20,7 @@ import {ExecutableCommandsDao} from "./services/dal/ExecutableCommandsDao";
 import {ExecutableCommandsDaoKeyValue} from "./infra/dal/ExecutableCommandsDaoKeyValue";
 import {CommandBaseSync} from "ike-framework/out/core/CommandBaseSync";
 import {CommandBaseAsync} from "ike-framework/out/core/CommandBaseAsync";
+import {RemoveCommand} from "./commands/RemoveCommand";
 
 const container = new Container();
 
@@ -35,6 +36,7 @@ container.bind<Command>(Types.Command).to(ConfigureCommand);
 container.bind<Command>(Types.Command).to(InitCommand);
 container.bind<Command>(Types.Command).to(ExecuteCommand);
 container.bind<Command>(Types.Command).to(CreateCommand);
+container.bind<Command>(Types.Command).to(RemoveCommand);
 
 container.bind<CommandsParser>(Types.CommandsParser).to(IkeCli);
 container.bind<CommandsRegistry>(Types.CommandsRegistry).to(CommandsRegistryImpl);

@@ -43,8 +43,8 @@ export class CreateCommand extends CommandBaseAsync {
     //<editor-fold desc="Stages" >
     @stage("Preparing...")
     private async prepare(argumentsMap: Map<string, string>, optionValues: Map<string, string>): Promise<void> {
-        let commandNameToCreate: string = argumentsMap.get("name") || ""; //TODO: better handling needed...
-        if (commandNameToCreate == "") {
+        let commandNameToCreate: string | undefined = argumentsMap.get("name"); //TODO: better handling needed...
+        if (!commandNameToCreate) {
             throw new Error("Fatal! Command name is required!");
         }
         let className: string = commandNameToCreate.replace(/-([a-z])/g, function (g) {

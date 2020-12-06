@@ -29,6 +29,14 @@ export class LevelUpDatabase implements KeyValueDatabase {
 
     }
 
+    delete(dimension: KeyValueDatabaseDimension, uniqueId?: string): Promise<any> {
+        if (uniqueId) {
+            return this.db.del(dimension + ":" + uniqueId);
+        } else {
+            return this.db.del(dimension);
+        }
+    }
+
     getAll(dimension: KeyValueDatabaseDimension): Promise<any[]> {
         return new Promise<any[]>((resolve, reject) => {
             let allValues: any[] = [];

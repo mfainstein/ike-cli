@@ -133,7 +133,7 @@ export class Files {
     }
 
     public static delete(fileToDelete: LocalFile) {
-        this.fs.unlinkSync(fileToDelete.getAbsolutePath());
+        this.fs.unlinkSync(fileToDelete.getPath());
     }
 
     public static mkdir(file: LocalFile) {
