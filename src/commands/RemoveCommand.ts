@@ -29,9 +29,13 @@ export class RemoveCommand extends CommandBaseAsync {
         }
 
         //validate command existence in dao
-        let command: ExecutableCommand = await this.executableCommandsDao.get(commandNameToDelete);
-        if (!command) {
-            throw new Error("Could not find command with name " + commandNameToDelete);
+        let command: ExecutableCommand;
+        try {
+            command = await this.executableCommandsDao.get(commandNameToDelete);
+        }
+        catch (e) {
+            console.error("Could not find command with name " + commandNameToDelete);
+            return;
         }
 
         //validate command path
@@ -43,7 +47,6 @@ export class RemoveCommand extends CommandBaseAsync {
         }
 
         this.storeValue("commandToDelete", command);
-
     }
 
     @stage("Removing...")
