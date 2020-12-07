@@ -19,7 +19,7 @@ import {Files} from "../utilities/Files";
     ]
 )
 @usage("ike init")
-@description("init a scripting project that will contain your scripts.")
+@description("init a scripting project that will contain your commands (scripts).")
 
 export class InitCommand extends CommandBaseAsync {
 

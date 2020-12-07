@@ -19,7 +19,7 @@ import tsNode from "ts-node";
 @usage("ike execute <CommandName>")
 export class ExecuteCommand extends CommandBaseAsync {
 
-    private commandClassNames:string[];
+    private commandClassNames: string[];
 
     constructor(@inject(Types.ExecutableCommandsDao) private executableCommandsDao: ExecutableCommandsDao) {
         super();
@@ -32,10 +32,10 @@ export class ExecuteCommand extends CommandBaseAsync {
     }
 
     async importSubCommands(): Promise<void> {
-        let nowInSecs = Date.now()/1000;
+        let nowInSecs = Date.now() / 1000;
         //TODO: since setup is awaiting, we cannot setTimeout here in this block...
         //TODO: probably the spinner handling should happen as a command life cycle step controller from outside.
-        let spinner:ora.Ora = ora("Getting the latest news in the scripting world...").start();
+        let spinner: ora.Ora = ora("Getting the latest news in the scripting world...").start();
         let dir = process.cwd();
         let executableCommands: ExecutableCommand[] = await this.executableCommandsDao.getAll();
         //tsImport.options.flags = [];
@@ -50,10 +50,10 @@ export class ExecuteCommand extends CommandBaseAsync {
         //TODO: the compiled object contains the class as part of its exports
         //TODO: find a better way to extract the Command so the type Command will take effect.
         let commands: any[] = await Promise.all(compilePromises);
-        let index:number = 0;
+        let index: number = 0;
         for (let commandExports of commands) {
-            let commandClassName:string = this.commandClassNames[index];
-            let command:Command = new commandExports[commandClassName];
+            let commandClassName: string = this.commandClassNames[index];
+            let command: Command = new commandExports[commandClassName];
             this.addSubCommand(command);
             index++;
         }
@@ -64,8 +64,17 @@ export class ExecuteCommand extends CommandBaseAsync {
     }
 
     async doExecute(argumentValues: Map<string, string>, optionValues: Map<string, string>): Promise<void> {
-        let commandName:string = argumentValues.get("name") || "";
-
+        let commandName: string | undefined = argumentValues.get("name");
+        if (!commandName) {
+            throw new Error("Fatal! Command name is required!");
+        }
+        let command: ExecutableCommand;
+        try {
+            command = await this.executableCommandsDao.get(commandName);
+        }
+        catch (e) {
+            console.error("Could not find command with name " + commandName);
+        }
 
     }
 
