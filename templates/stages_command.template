@@ -1,0 +1,18 @@
+import {commandName, description, options, requiredArgs, usage} from "ike-framework/out/core/CommandBase";
+import {CommandBaseSync} from "ike-framework/out/core/CommandBaseSync";
+
+@commandName("{{name}}")
+@requiredArgs([])
+@options([])
+@usage("ike {{name}}")
+@description("{{description}}")
+
+export class {{className}} extends CommandBaseSync {
+    @stage("A generic stage...!")
+        private async prepare(argumentsMap: Map<string, string>, optionValues: Map<string, string>): Promise<void> {
+            //TODO: Take it forward...!
+            //Tip: you can store/retrieve values between stages this way:
+            //this.storeValue("name", value);
+            //let name: string = this.getValue("name");
+        }
+}

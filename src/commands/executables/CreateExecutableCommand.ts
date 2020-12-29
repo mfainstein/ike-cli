@@ -1,16 +1,16 @@
 import {requiredArgs, CommandBase, commandName, description, usage, options} from "ike-framework/out/core/CommandBase";
 import {inject, injectable} from "inversify";
 import * as Mustache from 'mustache';
-import {LocalFile} from "../utilities/LocalFile";
-import {TextFiles} from "../utilities/TextFiles";
-import {Files} from "../utilities/Files";
-import {ProcessUtils} from "../utilities/ProcessUtils";
-import {ExecutableCommand} from "../core/ExecutableCommand";
+import {LocalFile} from "../../utilities/LocalFile";
+import {TextFiles} from "../../utilities/TextFiles";
+import {Files} from "../../utilities/Files";
+import {ProcessUtils} from "../../utilities/ProcessUtils";
+import {ExecutableCommand} from "../../core/ExecutableCommand";
 import {CommandBaseAsync} from "ike-framework/out/core/CommandBaseAsync";
-import {Types} from "../Types";
-import {ProjectsDao} from "../services/dal/ProjectsDao";
-import {Project} from "../core/projects/Project";
-import {ExecutableCommandsDao} from "../services/dal/ExecutableCommandsDao";
+import {Types} from "../../Types";
+import {ProjectsDao} from "../../services/dal/ProjectsDao";
+import {Project} from "../../core/projects/Project";
+import {ExecutableCommandsDao} from "../../services/dal/ExecutableCommandsDao";
 import {tsImport} from "ts-import";
 import {stage} from "ike-framework/out/core/CommandBase";
 
@@ -21,7 +21,7 @@ import {stage} from "ike-framework/out/core/CommandBase";
 @options([{name: "desc", description: "description for the command", flag: "-d, --desc <d>"}])
 @description("Create an executable command.")
 @usage("ike create")
-export class CreateCommand extends CommandBaseAsync {
+export class CreateExecutableCommand extends CommandBaseAsync {
 
     constructor(@inject(Types.ProjectsDao) private projectsDao: ProjectsDao,
                 @inject(Types.ExecutableCommandsDao) private executableCommandsDao: ExecutableCommandsDao) {

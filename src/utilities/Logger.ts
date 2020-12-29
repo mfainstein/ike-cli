@@ -16,6 +16,6 @@ export class Logger {
     }
 
     public static highlight(): void {
-        
+
     }
 }

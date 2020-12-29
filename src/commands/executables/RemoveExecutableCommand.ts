@@ -1,13 +1,13 @@
 import {CommandBaseAsync} from "ike-framework/out/core/CommandBaseAsync";
 import {commandName, description, options, requiredArgs, stage, usage} from "ike-framework/out/core/CommandBase";
 import {inject, injectable} from "inversify";
-import {Types} from "../Types";
-import {ProjectsDao} from "../services/dal/ProjectsDao";
-import {ExecutableCommandsDao} from "../services/dal/ExecutableCommandsDao";
+import {Types} from "../../Types";
+import {ProjectsDao} from "../../services/dal/ProjectsDao";
+import {ExecutableCommandsDao} from "../../services/dal/ExecutableCommandsDao";
 import {Command} from "ike-framework/out/core/Command";
-import {ExecutableCommand} from "../core/ExecutableCommand";
-import {Files} from "../utilities/Files";
-import {LocalFile} from "../utilities/LocalFile";
+import {ExecutableCommand} from "../../core/ExecutableCommand";
+import {Files} from "../../utilities/Files";
+import {LocalFile} from "../../utilities/LocalFile";
 
 @injectable()
 @commandName("remove")
@@ -15,7 +15,7 @@ import {LocalFile} from "../utilities/LocalFile";
 @options([])
 @description("Remove a command.")
 @usage("ike remove")
-export class RemoveCommand extends CommandBaseAsync {
+export class RemoveExecutableCommand extends CommandBaseAsync {
     constructor(@inject(Types.ExecutableCommandsDao) private executableCommandsDao: ExecutableCommandsDao) {
         super();
     }

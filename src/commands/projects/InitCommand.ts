@@ -1,13 +1,13 @@
 import {inject, injectable} from "inversify";
-import {ProjectBuilder} from "../core/projects/ProjectBuilder";
+import {ProjectBuilder} from "../../core/projects/ProjectBuilder";
 import {requiredArgs, CommandBase, commandName, description, options, usage} from "ike-framework/out/core/CommandBase";
-import {ProjectsDao} from "../services/dal/ProjectsDao";
-import {Types} from "../Types";
-import {Project} from "../core/projects/Project";
+import {ProjectsDao} from "../../services/dal/ProjectsDao";
+import {Types} from "../../Types";
+import {Project} from "../../core/projects/Project";
 import {CommandBaseAsync} from "ike-framework/out/core/CommandBaseAsync";
-import {ProcessUtils} from "../utilities/ProcessUtils";
-import {LocalFile} from "../utilities/LocalFile";
-import {Files} from "../utilities/Files";
+import {ProcessUtils} from "../../utilities/ProcessUtils";
+import {LocalFile} from "../../utilities/LocalFile";
+import {Files} from "../../utilities/Files";
 
 @injectable()
 @commandName("init")
@@ -21,6 +21,7 @@ import {Files} from "../utilities/Files";
 @usage("ike init")
 @description("init a scripting project that will contain your commands (scripts).")
 
+//TODO: should this just be "CreateProjectCommand"???
 export class InitCommand extends CommandBaseAsync {
 
     private static DEFAULT_PROJECT_NAME = "IkeScripts";

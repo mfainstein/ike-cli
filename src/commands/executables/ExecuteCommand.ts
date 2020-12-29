@@ -1,15 +1,12 @@
 import {inject, injectable} from "inversify";
-import * as Commander from 'commander';
 import {CommandBase, commandName, description, options, requiredArgs, usage} from "ike-framework/out/core/CommandBase";
 import {tsImport, Compiler} from "ts-import";
 import {CommandBaseAsync} from "ike-framework/out/core/CommandBaseAsync";
-import {Types} from "../Types";
-import {ExecutableCommandsDao} from "../services/dal/ExecutableCommandsDao";
-import {ExecutableCommand} from "../core/ExecutableCommand";
+import {Types} from "../../Types";
+import {ExecutableCommandsDao} from "../../services/dal/ExecutableCommandsDao";
+import {ExecutableCommand} from "../../core/ExecutableCommand";
 import {Command} from "ike-framework/out/core/Command";
 import ora from 'ora';
-import tsNode from "ts-node";
-
 
 @injectable()
 @commandName("execute")
